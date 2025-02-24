@@ -21,6 +21,18 @@ async def run_llm_client():
             # --- Initialization Handshake ---
             await client.connect(send_func)
 
+            # Retrieve and display available resources.
+            try:
+                resources = await client.request("list_resources", {})
+                print("Available Resources:")
+                for resource in resources:
+                    name = resource.get("name", "Unnamed")
+                    uri_val = resource.get("uri", "No URI")
+                    capabilities = resource.get("capabilities", [])
+                    print(f" - {name} (URI: {uri_val}, Capabilities: {capabilities})")
+            except Exception as e:
+                print("Error fetching resources:", e)
+
             # Prompt the user for input.
             prompt_text = input("Enter your prompt for the LLM: ").strip()
             model = input("Enter the model to use (leave blank for default): ").strip() or None
@@ -37,7 +49,7 @@ async def run_llm_client():
             except Exception as e:
                 print("Error in ask_llm request:", e)
 
-            # Optionally, send a shutdown request to gracefully end the session.
+            # Initiate graceful shutdown.
             try:
                 shutdown_resp = await client.request("shutdown", {})
                 print("Shutdown response:", shutdown_resp)
