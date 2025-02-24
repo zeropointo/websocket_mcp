@@ -1,9 +1,10 @@
+import argparse
 import asyncio
 import websockets
 from .mcp_client import MCPClient, websocket_transport_client
 
-async def run_llm_client():
-    uri = "ws://localhost:8766"  # The server running local_llm_server.py
+async def run_llm_client(server_ip):
+    uri = f"ws://{server_ip}:8766"  # The server running local_llm_server.py
     client = MCPClient("llm-client", "1.0.0", capabilities={"llm": True})
     
     try:
@@ -71,7 +72,11 @@ async def run_llm_client():
         print(f"Failed to connect to the server at {uri}: {e}")
 
 def main():
-    asyncio.run(run_llm_client())
+    parser = argparse.ArgumentParser(description="Run the LLM client.")
+    parser.add_argument('--server-ip', default='127.0.0.1', help='IP address of the server to connect to')
+    args = parser.parse_args()
+
+    asyncio.run(run_llm_client(args.server_ip))
 
 if __name__ == "__main__":
     main()

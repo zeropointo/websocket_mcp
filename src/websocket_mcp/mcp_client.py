@@ -1,3 +1,4 @@
+import argparse
 import asyncio
 import json
 import anyio
@@ -173,13 +174,17 @@ async def websocket_client(uri):
             except asyncio.CancelledError:
                 pass
 
-async def start_mcp_client():
-    uri = "ws://localhost:8765"
+async def start_mcp_client(server_ip):
+    uri = f"ws://{server_ip}:8765"
     print("Connecting to MCP server at", uri)
     await websocket_client(uri)
 
 def main():
-    asyncio.run(start_mcp_client())
+    parser = argparse.ArgumentParser(description="Run the MCP client.")
+    parser.add_argument('--server-ip', default='127.0.0.1', help='IP address of the server to connect to')
+    args = parser.parse_args()
+
+    asyncio.run(start_mcp_client(args.server_ip))
 
 if __name__ == "__main__":
     main()
