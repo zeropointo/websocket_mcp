@@ -27,8 +27,15 @@ async def ask_llm_handler(params):
         raise ValueError("Missing 'prompt' parameter")
     model = params.get("model", "deepseek-r1:7b")  # use a default model if none provided
 
+    # Log the request details
+    print(f"Request: '{prompt}', with model '{model}'")
+
     try:
         response = ollama.generate(model=model, prompt=prompt)
+        
+        # Log the response details
+        print(f"Response: '{response['response']}'")
+        
         return {"answer": response['response']}
     except Exception as e:
         raise Exception(f"Ollama LLM error: {str(e)}")
@@ -47,9 +54,10 @@ async def list_resources_handler(params):
         # Query ollama for a list of available models.
         models_response = ollama.list()
         
-        # Convert the response to a JSON-serializable format.
-        models = [model.to_dict() for model in models_response]  # Assuming each model has a to_dict() method
-    except Exception:
+        # Extract only the model names.
+        models = [model.model for model in models_response.models]
+    except Exception as e:
+        print(f"Error fetching models: {e}")
         models = []  # Fallback to an empty list if the query fails.
 
     resources = [
