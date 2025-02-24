@@ -17,7 +17,7 @@ The server and clients can be configured and run using command-line arguments, w
 
 ## Example (Server):
 
-```zsh
+```shell
 $ uv run local-llm-server
 Local LLM MCP Server running on ws://0.0.0.0:8766
 Request: 'What are the steps to building a model rocket?', with model 'llama3.1:8b'
@@ -36,7 +36,7 @@ If you're new to model rockets, consider buying an kit that includes all the nec
 
 ## Example (Client):
 
-```zsh
+```shell
 $ uv run local-llm-client --server-ip 192.168.1.123
 Initialization response from server: {'serverName': 'local-llm-server', 'serverVersion': '1.0.0', 'capabilities': {'llm': True}}
 Available Resources:
