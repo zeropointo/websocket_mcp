@@ -207,8 +207,8 @@ async def websocket_server_handler(websocket):
                 continue
 
 async def start_mcp_server():
-    async with websockets.serve(websocket_server_handler, "localhost", 8765):
-        print("MCP WebSocket Server running on ws://localhost:8765")
+    async with websockets.serve(websocket_server_handler, "", 8765):  # Bind to all interfaces
+        print("MCP WebSocket Server running on ws://0.0.0.0:8765")
         # Wait indefinitely until shutdown.
         await asyncio.Future()
 

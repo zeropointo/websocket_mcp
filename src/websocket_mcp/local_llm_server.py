@@ -99,8 +99,8 @@ async def websocket_llm_server_handler(websocket):
 
 async def start_local_llm_server():
     # Use port 8766 to avoid conflicts with other MCP servers.
-    async with websockets.serve(websocket_llm_server_handler, "localhost", 8766):
-        print("Local LLM MCP Server running on ws://localhost:8766")
+    async with websockets.serve(websocket_llm_server_handler, "", 8766):  # Bind to all interfaces
+        print("Local LLM MCP Server running on ws://0.0.0.0:8766")
         await asyncio.Future()  # Run indefinitely
 
 def main():
