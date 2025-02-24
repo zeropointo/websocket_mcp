@@ -4,4 +4,18 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "anyio>=4.8.0",
+    "ollama>=0.4.7",
+    "websockets>=15.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+mcp-server = "mcp_server:main"
+mcp-client = "mcp_client:main"
+local-llm-mcp = "local_llm_server:main"
+local-llm-client = "local_llm_client:main"
