@@ -1,6 +1,6 @@
 import asyncio
 import websockets
-from mcp_client import MCPClient, websocket_transport_client
+from .mcp_client import MCPClient, websocket_transport_client
 
 async def run_llm_client():
     uri = "ws://localhost:8766"  # The server running local_llm_server.py
@@ -51,5 +51,8 @@ async def run_llm_client():
             except asyncio.CancelledError:
                 pass
 
-if __name__ == "__main__":
+def main():
     asyncio.run(run_llm_client())
+
+if __name__ == "__main__":
+    main()

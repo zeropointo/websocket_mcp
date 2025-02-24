@@ -159,7 +159,11 @@ async def websocket_transport_server(websocket):
             tg.cancel_scope.cancel()
             await websocket.close()
 
-async def websocket_server_handler(websocket, path):
+async def websocket_server_handler(websocket):
+    """
+    Wraps an accepted WebSocket connection in an MCP server.
+    The 'path' parameter has been removed as it's no longer used in newer websockets versions.
+    """
     server = MCPServer("example-server", "1.0.0", capabilities={"streaming": True})
     
     # Handler for "list_resources" requests.
@@ -208,5 +212,8 @@ async def start_mcp_server():
         # Wait indefinitely until shutdown.
         await asyncio.Future()
 
-if __name__ == "__main__":
+def main():
     asyncio.run(start_mcp_server())
+
+if __name__ == "__main__":
+    main()

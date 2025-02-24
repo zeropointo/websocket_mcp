@@ -178,5 +178,8 @@ async def start_mcp_client():
     print("Connecting to MCP server at", uri)
     await websocket_client(uri)
 
-if __name__ == "__main__":
+def main():
     asyncio.run(start_mcp_client())
+
+if __name__ == "__main__":
+    main()

@@ -4,7 +4,7 @@ import anyio
 import websockets
 
 # Import the MCP server implementation.
-from mcp_server import MCPServer, websocket_transport_server, JSON_RPC_VERSION
+from .mcp_server import MCPServer, websocket_transport_server, JSON_RPC_VERSION
 
 # Import the ollama package.
 import ollama
@@ -25,23 +25,22 @@ async def ask_llm_handler(params):
     prompt = params.get("prompt")
     if not prompt:
         raise ValueError("Missing 'prompt' parameter")
-    model = params.get("model", "default-model")  # use a default model if none provided
+    model = params.get("model", "deepseek-r1:7b")  # use a default model if none provided
 
     # Call the ollama package to run the prompt.
-    # (This call may be synchronous; if so, consider running it in a thread pool.)
     try:
-        answer = ollama.run(prompt, model=model)
+        response = ollama.generate(model=model, prompt=prompt)
+        return {"answer": response['response']}
     except Exception as e:
         raise Exception(f"Ollama LLM error: {str(e)}")
-    
-    return {"answer": answer}
 
 # --- WebSocket Server Handler ---
 
-async def websocket_llm_server_handler(websocket, path):
+async def websocket_llm_server_handler(websocket):
     """
     Wraps an accepted WebSocket connection in an MCP server that exposes
     a local LLM via the ollama package.
+    The 'path' parameter has been removed as it's no longer used in newer websockets versions.
     """
     # Create an MCP server instance with LLM capability.
     server = MCPServer("local-llm-server", "1.0.0", capabilities={"llm": True})
@@ -69,5 +68,8 @@ async def start_local_llm_server():
         print("Local LLM MCP Server running on ws://localhost:8766")
         await asyncio.Future()  # Run indefinitely
 
-if __name__ == "__main__":
+def main():
     asyncio.run(start_local_llm_server())
+
+if __name__ == "__main__":
+    main()

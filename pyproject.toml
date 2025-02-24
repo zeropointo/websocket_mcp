@@ -15,7 +15,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project.scripts]
-mcp-server = "mcp_server:main"
-mcp-client = "mcp_client:main"
-local-llm-mcp = "local_llm_server:main"
-local-llm-client = "local_llm_client:main"
+mcp-server = "websocket_mcp.mcp_server:main"
+mcp-client = "websocket_mcp.mcp_client:main"
+local-llm-server = "websocket_mcp.local_llm_server:main"
+local-llm-client = "websocket_mcp.local_llm_client:main"
